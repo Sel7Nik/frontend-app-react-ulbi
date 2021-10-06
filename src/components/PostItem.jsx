@@ -1,4 +1,5 @@
 import React from 'react';
+import MyButton from './UI/button/MyButton';
 
 const PostItem = ({ post }) => {
   const { id, title, text } = post;
@@ -11,7 +12,8 @@ const PostItem = ({ post }) => {
           <div className="post__content_text">{text}</div>
         </div>
         <div className="post__btns">
-          <button className="post__btn">Удалить</button>
+          {/* <button className="post__btn">Удалить</button> */}
+          <MyButton>Удалить</MyButton>
         </div>
       </div>
     </div>

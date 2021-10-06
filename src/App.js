@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PostList from './components/PostList';
+import MyButton from './components/UI/button/MyButton';
 
 import './styles/App.css';
 const App = () => {
-  const [posts, setPosts] = useState([
+  const [posts] = useState([
     {
       id: 1,
       title: '1. Javascript 1',
@@ -20,28 +21,15 @@ const App = () => {
       text: ' Javascript это язык программирования',
     },
   ]);
-  const [posts2, setPosts2] = useState([
-    {
-      id: 1,
-      title: '1. Pyton 1',
-      text: ' Pyton это язык программирования',
-    },
-    {
-      id: 2,
-      title: '2. Pyton 2',
-      text: ' Pyton это язык программирования',
-    },
-    {
-      id: 3,
-      title: '3. Pyton 3',
-      text: ' Pyton это язык программирования',
-    },
-  ]);
 
   return (
     <div className="App">
+      <form action="">
+        <input type="text" placeholder="Название поста" />
+        <input type="text" placeholder="Описание поста" />
+        <MyButton>Создать пост</MyButton>
+      </form>
       <PostList posts={posts} title="Список постов про JS" />
-      <PostList posts={posts2} title="Список постов про Pyton" />
     </div>
   );
 };
