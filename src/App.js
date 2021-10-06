@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
 const App = () => {
-  let likes = 0;
+  // const state = useState(0);
+  let [likes, setLikes] = useState(0);
   console.log(likes);
   return (
     <div>
       <h1>{likes}</h1>
       <button
         onClick={() => {
-          likes += 1;
+          setLikes((likes += 1));
           console.log(likes);
         }}
       >
@@ -16,7 +17,7 @@ const App = () => {
       </button>
       <button
         onClick={() => {
-          likes -= 1;
+          setLikes((likes -= 1));
           console.log(likes);
         }}
       >
