@@ -7,7 +7,9 @@ const App = () => {
   const text = ' Javascript это язык программирования';
   return (
     <div className="App">
-      <h1 className="App__title">Список постов</h1>
+      <h1 className="App__title" style={{ textAlign: 'center' }}>
+        Список постов
+      </h1>
       <PostItem post={{ id: id, title: title, text: text }} />
       <PostItem post={{ id: id, title: title, text: text }} />
       <PostItem post={{ id: id, title: title, text: text }} />

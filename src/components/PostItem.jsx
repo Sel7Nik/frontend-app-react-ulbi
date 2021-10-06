@@ -5,7 +5,6 @@ const PostItem = (props) => {
   // const content_title = props.post.title;
   // const content_text = props.post.text;
   const { id, title, text } = props.post;
-  console.log(id);
   return (
     <div>
       <div className="post">
