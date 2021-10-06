@@ -27,7 +27,7 @@ const App = () => {
       <form action="">
         <input type="text" placeholder="Название поста" />
         <input type="text" placeholder="Описание поста" />
-        <MyButton>Создать пост</MyButton>
+        <MyButton disabled>Создать пост</MyButton>
       </form>
       <PostList posts={posts} title="Список постов про JS" />
     </div>
