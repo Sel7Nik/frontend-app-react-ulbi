@@ -1,12 +1,12 @@
 import React from 'react';
 import PostItem from './PostItem';
-const PostList = (props) => {
+const PostList = ({ posts }) => {
   return (
     <div>
       <h1 className="App__title" style={{ textAlign: 'center' }}>
         Список постов
       </h1>
-      {props.posts.map((post) => (
+      {posts.map((post) => (
         <PostItem post={post} key={post.id} />
       ))}
     </div>
