@@ -1,9 +1,6 @@
 import React from 'react';
 
 const PostItem = ({ post }) => {
-  // const content_id = props.post.id;
-  // const content_title = props.post.title;
-  // const content_text = props.post.text;
   const { id, title, text } = post;
   return (
     <div>
