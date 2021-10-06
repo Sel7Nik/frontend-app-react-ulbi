@@ -2,23 +2,16 @@ import React from 'react';
 import PostItem from './components/PostItem';
 import './styles/App.css';
 const App = () => {
-  const content_id = 1;
-  const content_title = '1. Javascript';
-  const content_text = ' Javascript это язык программирования';
+  const id = 1;
+  const title = '1. Javascript';
+  const text = ' Javascript это язык программирования';
   return (
     <div className="App">
-      <PostItem
-        post={{ id: content_id, title: content_title, text: content_text }}
-      />
-      <PostItem
-        post={{ id: content_id, title: content_title, text: content_text }}
-      />
-      <PostItem
-        post={{ id: content_id, title: content_title, text: content_text }}
-      />
-      <PostItem
-        post={{ id: content_id, title: content_title, text: content_text }}
-      />
+      <h1 className="App__title">Список постов</h1>
+      <PostItem post={{ id: id, title: title, text: text }} />
+      <PostItem post={{ id: id, title: title, text: text }} />
+      <PostItem post={{ id: id, title: title, text: text }} />
+      <PostItem post={{ id: id, title: title, text: text }} />
     </div>
   );
 };
