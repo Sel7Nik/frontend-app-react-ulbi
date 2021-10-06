@@ -1,8 +1,9 @@
 import React from 'react';
 
-const PostItem = () => {
-  const content_title = '1. Javascript';
-  const content_text = ' Javascript это язык программирования';
+const PostItem = (props) => {
+  const content_id = props.post.id;
+  const content_title = props.post.title;
+  const content_text = props.post.text;
   return (
     <div>
       <div className="post">
