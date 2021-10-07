@@ -25,8 +25,8 @@ const App = () => {
 
   const [title, setTitle] = useState('initialState');
 
-  const addNewPost = () => {
-    setTitle();
+  const addNewPost = (ev) => {
+    ev.preventDefault();
   };
 
   return (
@@ -34,7 +34,7 @@ const App = () => {
       <form action="">
         <MyInput
           value={title}
-          onChange={(event) => setTitle(event.target.value)}
+          onChange={(ev) => setTitle(ev.target.value)}
           type="text"
           placeholder="Описание поста"
         />
