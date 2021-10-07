@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
+import MyInput from './components/UI/input/MyInput';
 
 import './styles/App.css';
 const App = () => {
@@ -22,12 +23,23 @@ const App = () => {
     },
   ]);
 
+  const [title, setTitle] = useState('initialState');
+
+  const addNewPost = () => {
+    setTitle();
+  };
+
   return (
     <div className="App">
       <form action="">
-        <input type="text" placeholder="Название поста" />
-        <input type="text" placeholder="Описание поста" />
-        <MyButton disabled>Создать пост</MyButton>
+        <MyInput
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+          type="text"
+          placeholder="Описание поста"
+        />
+        <MyInput type="text" placeholder="Название поста" />
+        <MyButton onClick={addNewPost}>Создать пост</MyButton>
       </form>
       <PostList posts={posts} title="Список постов про JS" />
     </div>
