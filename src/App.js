@@ -5,7 +5,7 @@ import MyInput from './components/UI/input/MyInput';
 
 import './styles/App.css';
 const App = () => {
-  const [posts] = useState([
+  const [posts, setPosts] = useState([
     {
       id: 1,
       title: '1. Javascript 1',
@@ -24,12 +24,19 @@ const App = () => {
   ]);
 
   const [title, setTitle] = useState('initialState');
+  const [body, setBody] = useState('body');
 
-  const bodyInputRef = useRef('initialValue');
   const addNewPost = (ev) => {
     ev.preventDefault();
+    const newPost = {
+      id: Date.now(),
+      title,
+      body,
+    };
     console.log(title);
-    console.log(bodyInputRef.current.value);
+    console.log(body);
+    console.log(newPost);
+    setPosts([...posts, newPost]);
   };
 
   return (
@@ -41,8 +48,12 @@ const App = () => {
           type="text"
           placeholder="Описание поста"
         />
-        {/* <input type="text" ref={bodyInputRef} /> */}
-        <MyInput ref={bodyInputRef} type="text" placeholder="Название поста" />
+        <MyInput
+          value={body}
+          onChange={(ev) => setBody(ev.target.value)}
+          type="text"
+          placeholder="Название поста"
+        />
         <MyButton onClick={addNewPost}>Создать пост</MyButton>
       </form>
       <PostList posts={posts} title="Список постов про JS" />
