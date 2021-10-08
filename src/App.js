@@ -8,8 +8,18 @@ const App = () => {
   const [posts, setPosts] = useState([
     {
       id: 1,
-      title: ' Javascript 1',
-      body: ' Javascript это язык программирования',
+      title: 'aaa',
+      body: 'aaa',
+    },
+    {
+      id: 2,
+      title: 'bbb',
+      body: 'ccc',
+    },
+    {
+      id: 3,
+      title: 'ccc',
+      body: 'bbb',
     },
   ]);
   const [selectedSort, setSelectedSort] = useState('');
@@ -24,6 +34,7 @@ const App = () => {
 
   const sortPosts = (sort) => {
     setSelectedSort(sort);
+
     setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])));
   };
   return (
