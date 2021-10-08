@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
+import MyInput from './components/UI/input/MyInput';
 import MySelect from './components/UI/select/MySelect';
 
 import './styles/App.css';
@@ -24,6 +25,18 @@ const App = () => {
   ]);
   const [selectedSort, setSelectedSort] = useState('');
 
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const getSortedPost = () => {
+    if (selectedSort) {
+      return [...posts].sort((a, b) =>
+        a[selectedSort].localeCompare(b[selectedSort])
+      );
+    } else return posts;
+  };
+
+  const sortedPosts = getSortedPost();
+
   const createNewPost = (newPosts) => {
     setPosts([...posts, newPosts]);
   };
@@ -34,13 +47,16 @@ const App = () => {
 
   const sortPosts = (sort) => {
     setSelectedSort(sort);
-
-    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])));
   };
   return (
     <div className="App">
       <PostForm create={createNewPost} />
       <hr style={{ margin: '15px 0' }} />
+      <MyInput
+        placeholder="Поиск..."
+        value={searchQuery}
+        onChange={(ev) => setSearchQuery(ev.target.value)}
+      />
       <MySelect
         value={selectedSort}
         onChange={sortPosts}
@@ -53,7 +69,7 @@ const App = () => {
       {posts.length !== 0 ? (
         <PostList
           remove={removePost}
-          posts={posts}
+          posts={sortedPosts}
           title="Список постов про JS"
         />
       ) : (
