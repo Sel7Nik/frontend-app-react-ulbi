@@ -12,6 +12,7 @@ const App = () => {
       body: ' Javascript это язык программирования',
     },
   ]);
+  const [selectedSort, setSelectedSort] = useState('');
 
   const createNewPost = (newPosts) => {
     setPosts([...posts, newPosts]);
@@ -21,11 +22,17 @@ const App = () => {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
 
+  const sortPosts = (sort) => {
+    setSelectedSort(sort);
+    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])));
+  };
   return (
     <div className="App">
       <PostForm create={createNewPost} />
       <hr style={{ margin: '15px 0' }} />
       <MySelect
+        value={selectedSort}
+        onChange={sortPosts}
         defaultValue="Сортировка по..."
         options={[
           { value: 'title', name: 'По названию' },
