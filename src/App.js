@@ -4,6 +4,7 @@ import PostForm from './components/PostForm';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
 import MyModal from './components/UI/modal/MyModal';
+import { usePosts } from './hooks/usePosts';
 
 import './styles/App.css';
 const App = () => {
@@ -37,29 +38,19 @@ const App = () => {
 
   const [filter, setFilter] = useState({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
-  const sortedPosts = useMemo(() => {
-    if (filter.sort) {
-      return [...posts].sort((a, b) =>
-        a[filter.sort].localeCompare(b[filter.sort])
-      );
-    } else return posts;
-  }, [filter.sort, posts]);
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
-  const sortedAndSearchedPosts = useMemo(() => {
-    return sortedPosts.filter((post) =>
-      post.title.toLowerCase().includes(filter.query.toLowerCase())
-    );
-  }, [filter.query, sortedPosts]);
-
+  //!--- создание
   const createPost = (newPosts) => {
     setPosts([...posts, newPosts]);
     setModal(false);
   };
-  // Получаем пост из дочернего компонента
+
+  //! Получаем пост из дочернего компонента
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
-
+  //!---
   return (
     <div className="App">
       <MyButton style={{ marginTop: '30px' }} onClick={() => setModal(true)}>
