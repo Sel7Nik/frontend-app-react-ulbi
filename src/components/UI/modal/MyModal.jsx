@@ -1,9 +1,22 @@
 import React from 'react';
 import css from './MyModal.module.css';
-const MyModal = ({ children }) => {
+
+const MyModal = ({ children, visible, setVisible }) => {
+  const rootClasses = [css.myModal];
+  if (visible) {
+    rootClasses.push(css.active);
+  }
+
   return (
-    <div className={[css.myModal, css.active].join(' ')}>
-      <div className={css.myModalContent}>{children}</div>
+    <div className={rootClasses.join(' ')} onClick={() => setVisible(false)}>
+      <div
+        className={css.myModalContent}
+        onClick={(ev) => {
+          ev.stopPropagation();
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 };
