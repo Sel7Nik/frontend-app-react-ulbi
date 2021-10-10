@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
 import MyInput from './components/UI/input/MyInput';
@@ -27,20 +27,24 @@ const App = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  const getSortedPost = () => {
+  const sortedPosts = useMemo(() => {
     if (selectedSort) {
       return [...posts].sort((a, b) =>
         a[selectedSort].localeCompare(b[selectedSort])
       );
     } else return posts;
-  };
+  }, [selectedSort, posts]);
 
-  const sortedPosts = getSortedPost();
+  const sortedAndSearchedPosts = useMemo(() => {
+    return sortedPosts.filter((post) =>
+      post.title.toLowerCase().includes(searchQuery)
+    );
+  }, [searchQuery, sortedPosts]);
 
-  const createNewPost = (newPosts) => {
+  const createPost = (newPosts) => {
     setPosts([...posts, newPosts]);
   };
-
+  // Получаем пост из дочернего компонента
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
@@ -50,7 +54,7 @@ const App = () => {
   };
   return (
     <div className="App">
-      <PostForm create={createNewPost} />
+      <PostForm create={createPost} />
       <hr style={{ margin: '15px 0' }} />
       <MyInput
         placeholder="Поиск..."
@@ -66,10 +70,10 @@ const App = () => {
           { value: 'body', name: 'По описанию' },
         ]}
       />
-      {posts.length !== 0 ? (
+      {sortedAndSearchedPosts.length !== 0 ? (
         <PostList
           remove={removePost}
-          posts={sortedPosts}
+          posts={sortedAndSearchedPosts}
           title="Список постов про JS"
         />
       ) : (
