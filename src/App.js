@@ -10,12 +10,13 @@ import { useFetching } from './hooks/useFetching'
 import { usePosts } from './hooks/usePosts'
 
 import './styles/App.css'
+import { getPageCount } from './utils/pages'
 const App = () => {
   //!--- hooks состояний
   const [posts, setPosts] = useState([])
   const [filter, setFilter] = useState({ sort: '', query: '' })
   const [modal, setModal] = useState(false)
-  const [totalCount, setTotalCount] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(1)
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
@@ -23,10 +24,10 @@ const App = () => {
   const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
     const response = await PostService.getAll(limit, page)
     setPosts(response.data)
-    console.log(response.headers['x-total-count'])
-    setTotalCount(response.headers['x-total-count'])
+    const totalCount = response.headers['x-total-count']
+    setTotalPages(getPageCount(totalCount, limit))
   })
-
+  console.log(totalPages)
   //!--- hook состояние mount
   //!--- массив зависимостей пустой - callback отработает один раз
   useEffect(() => {
