@@ -23,20 +23,22 @@ const App = () => {
 
   //!---
   let pagesArray = getPagesArray(totalPages)
-  const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
-    const response = await PostService.getAll(limit, page)
-    setPosts(response.data)
-    const totalCount = response.headers['x-total-count']
-    setTotalPages(getPageCount(totalCount, limit))
-  })
+  const [fetchPosts, isPostLoading, postError] = useFetching(
+    async (limit, page) => {
+      const response = await PostService.getAll(limit, page)
+      setPosts(response.data)
+      const totalCount = response.headers['x-total-count']
+      setTotalPages(getPageCount(totalCount, limit))
+    }
+  )
   //!--- hook состояние mount
   //!--- массив зависимостей пустой - callback отработает один раз
   useEffect(() => {
-    fetchPosts()
+    fetchPosts(limit, page)
     // return () => {
     //   console.log('useEffect clean')
     // }
-  }, [page])
+  }, [])
 
   //!--- создание
   const createPost = (newPosts) => {
@@ -51,7 +53,7 @@ const App = () => {
   //!---
   const changePage = (page) => {
     setPage(page)
-    // fetchPosts()
+    fetchPosts(limit, page)
   }
   return (
     <div className="App">
