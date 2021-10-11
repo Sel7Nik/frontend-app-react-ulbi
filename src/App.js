@@ -39,12 +39,15 @@ const App = () => {
   //!--- hooks состояний
   const [filter, setFilter] = useState({ sort: '', query: '' })
   const [modal, setModal] = useState(false)
+  const [isPostLoading, setIsPostLoading] = useState(false)
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
   //!--- запрос к серверу
   const fetchPosts = async () => {
+    setIsPostLoading(true)
     const posts = await PostService.getAll()
     setPosts(posts)
+    setIsPostLoading(false)
   }
 
   //!--- hook состояние mount
@@ -80,12 +83,15 @@ const App = () => {
       <hr style={{ margin: '15px 0' }} />
 
       <PostFilter filter={filter} setFilter={setFilter} />
-
-      <PostList
-        remove={removePost}
-        posts={sortedAndSearchedPosts}
-        title="Список постов про JS"
-      />
+      {isPostLoading ? (
+        <h1>Идёт загрузка</h1>
+      ) : (
+        <PostList
+          remove={removePost}
+          posts={sortedAndSearchedPosts}
+          title="Список постов про JS"
+        />
+      )}
     </div>
   )
 }
