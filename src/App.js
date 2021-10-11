@@ -6,6 +6,7 @@ import PostList from './components/PostList'
 import MyButton from './components/UI/button/MyButton'
 import Loader from './components/UI/loader/Loader'
 import MyModal from './components/UI/modal/MyModal'
+import { useFetching } from './hooks/useFetching'
 import { usePosts } from './hooks/usePosts'
 
 import './styles/App.css'
@@ -16,41 +17,16 @@ const App = () => {
       title: 'aaa',
       body: 'aaa',
     },
-    {
-      id: 2,
-      title: 'bbb',
-      body: 'ccc',
-    },
-    {
-      id: 3,
-      title: 'ccc',
-      body: 'bbb',
-    },
-    {
-      id: 4,
-      title: 'ccc',
-      body: 'bbb',
-    },
-    {
-      id: 5,
-      title: 'AAA',
-      body: '000',
-    },
   ])
   //!--- hooks состояний
   const [filter, setFilter] = useState({ sort: '', query: '' })
   const [modal, setModal] = useState(false)
-  const [isPostLoading, setIsPostLoading] = useState(false)
-  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
-
-  //!--- запрос к серверу
-  const fetchPosts = async () => {
-    setIsPostLoading(true)
+  const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
     const posts = await PostService.getAll()
     setPosts(posts)
-    setIsPostLoading(false)
-  }
+  })
 
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
   //!--- hook состояние mount
   //!--- массив зависимостей пустой - callback отработает один раз
   useEffect(() => {
@@ -58,7 +34,7 @@ const App = () => {
     // return () => {
     //   console.log('useEffect clean')
     // }
-  }, [filter])
+  }, [])
 
   //!--- создание
   const createPost = (newPosts) => {
@@ -82,8 +58,10 @@ const App = () => {
       </MyModal>
 
       <hr style={{ margin: '15px 0' }} />
-      <Loader />
       <PostFilter filter={filter} setFilter={setFilter} />
+
+      {postError && <h1>Произошла ошибка ${postError}</h1>}
+
       {isPostLoading ? (
         <Loader />
       ) : (
