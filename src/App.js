@@ -1,12 +1,13 @@
-import React, { useMemo, useState } from 'react';
-import PostFilter from './components/PostFilter';
-import PostForm from './components/PostForm';
-import PostList from './components/PostList';
-import MyButton from './components/UI/button/MyButton';
-import MyModal from './components/UI/modal/MyModal';
-import { usePosts } from './hooks/usePosts';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import PostFilter from './components/PostFilter'
+import PostForm from './components/PostForm'
+import PostList from './components/PostList'
+import MyButton from './components/UI/button/MyButton'
+import MyModal from './components/UI/modal/MyModal'
+import { usePosts } from './hooks/usePosts'
 
-import './styles/App.css';
+import './styles/App.css'
 const App = () => {
   const [posts, setPosts] = useState([
     {
@@ -34,25 +35,43 @@ const App = () => {
       title: 'AAA',
       body: '000',
     },
-  ]);
+  ])
+  //!--- hooks состояний
+  const [filter, setFilter] = useState({ sort: '', query: '' })
+  const [modal, setModal] = useState(false)
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
-  const [filter, setFilter] = useState({ sort: '', query: '' });
-  const [modal, setModal] = useState(false);
-  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+  //!--- запрос к серверу
+  const fetchPosts = async () => {
+    const responce = await axios.get(
+      'https://jsonplaceholder.typicode.com/posts'
+    )
+    setPosts(responce.data)
+  }
+
+  //!--- hook состояние mount
+  //!--- массив зависимостей пустой - callback отработает один раз
+  useEffect(() => {
+    fetchPosts()
+    // return () => {
+    //   console.log('useEffect clean')
+    // }
+  }, [filter])
 
   //!--- создание
   const createPost = (newPosts) => {
-    setPosts([...posts, newPosts]);
-    setModal(false);
-  };
+    setPosts([...posts, newPosts])
+    setModal(false)
+  }
 
   //! Получаем пост из дочернего компонента
   const removePost = (post) => {
-    setPosts(posts.filter((p) => p.id !== post.id));
-  };
+    setPosts(posts.filter((p) => p.id !== post.id))
+  }
   //!---
   return (
     <div className="App">
+      <button onClick={fetchPosts}>fetchPosts</button>
       <MyButton style={{ marginTop: '30px' }} onClick={() => setModal(true)}>
         Создать пост
       </MyButton>
@@ -70,7 +89,7 @@ const App = () => {
         title="Список постов про JS"
       />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
