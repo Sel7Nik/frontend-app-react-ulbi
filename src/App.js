@@ -10,7 +10,7 @@ import { useFetching } from './hooks/useFetching'
 import { usePosts } from './hooks/usePosts'
 
 import './styles/App.css'
-import { getPageCount } from './utils/pages'
+import { getPageCount, getPagesArray } from './utils/pages'
 const App = () => {
   //!--- hooks состояний
   const [posts, setPosts] = useState([])
@@ -21,13 +21,14 @@ const App = () => {
   const [page, setPage] = useState(1)
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
+  //!---
+  let pagesArray = getPagesArray(totalPages)
   const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
     const response = await PostService.getAll(limit, page)
     setPosts(response.data)
     const totalCount = response.headers['x-total-count']
     setTotalPages(getPageCount(totalCount, limit))
   })
-  console.log(totalPages)
   //!--- hook состояние mount
   //!--- массив зависимостей пустой - callback отработает один раз
   useEffect(() => {
@@ -35,7 +36,7 @@ const App = () => {
     // return () => {
     //   console.log('useEffect clean')
     // }
-  }, [])
+  }, [page])
 
   //!--- создание
   const createPost = (newPosts) => {
@@ -48,9 +49,12 @@ const App = () => {
     setPosts(posts.filter((p) => p.id !== post.id))
   }
   //!---
+  const changePage = (page) => {
+    setPage(page)
+    // fetchPosts()
+  }
   return (
     <div className="App">
-      <button onClick={fetchPosts}>fetchPosts</button>
       <MyButton style={{ marginTop: '30px' }} onClick={() => setModal(true)}>
         Создать пост
       </MyButton>
@@ -72,6 +76,17 @@ const App = () => {
           title="Список постов про JS"
         />
       )}
+      <div className="page__wrapper">
+        {pagesArray.map((p) => (
+          <span
+            onClick={() => changePage(p)}
+            key={p}
+            className={page === p ? 'page page__current' : 'page'}
+          >
+            {p}
+          </span>
+        ))}
+      </div>
     </div>
   )
 }
