@@ -25,6 +25,16 @@
   align-items: center;
 }
 
+.post-btns {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+.post-btn {
+  margin-bottom: 5px;
+}
+
 .post-enter {
   transform: translateX(-650px);
 }
