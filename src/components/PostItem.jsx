@@ -8,7 +8,6 @@ const PostItem = ({ post, ...props }) => {
     props.remove(post)
   }
   const router = useHistory()
-  console.log(router)
 
   return (
     <div>

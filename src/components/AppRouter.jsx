@@ -14,6 +14,7 @@ const AppRouter = () => {
           component={route.component}
           path={route.path}
           exact={route.exact}
+          key={route.path}
         />
       ))}
       <Route path="/error">
@@ -28,6 +29,7 @@ const AppRouter = () => {
           component={route.component}
           path={route.path}
           exact={route.exact}
+          key={route.path}
         />
       ))}
       <Route path="/error">

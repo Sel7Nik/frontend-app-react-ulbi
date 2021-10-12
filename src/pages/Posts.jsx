@@ -36,9 +36,6 @@ const Posts = () => {
   //!--- массив зависимостей пустой - callback отработает один раз
   useEffect(() => {
     fetchPosts(limit, page)
-    // return () => {
-    //   console.log('useEffect clean')
-    // }
   }, [])
 
   //!--- создание
