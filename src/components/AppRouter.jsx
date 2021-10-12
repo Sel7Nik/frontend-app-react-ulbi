@@ -1,10 +1,11 @@
 import { Route, Switch, Redirect } from 'react-router-dom'
 import Error from '../pages/Error'
-import { routes } from '../router/router'
+import { privateRoutes, publicRoutes } from '../router/router'
 const AppRouter = () => {
-  return (
+  const isAuth = false
+  return isAuth ? (
     <Switch>
-      {routes.map((route) => (
+      {privateRoutes.map((route) => (
         <Route
           component={route.component}
           path={route.path}
@@ -15,6 +16,20 @@ const AppRouter = () => {
         <Error />
       </Route>
       <Redirect to="/posts" />
+    </Switch>
+  ) : (
+    <Switch>
+      {publicRoutes.map((route) => (
+        <Route
+          component={route.component}
+          path={route.path}
+          exact={route.exact}
+        />
+      ))}
+      <Route path="/error">
+        <Error />
+      </Route>
+      <Redirect to="/login" />
     </Switch>
   )
 }
