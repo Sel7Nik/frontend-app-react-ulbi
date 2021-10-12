@@ -33,7 +33,7 @@ const PostIdPage = () => {
         </div>
       )}
       <h2>Комментарии</h2>
-      {isLoading ? (
+      {isComLoading ? (
         <Loader />
       ) : (
         <div>
