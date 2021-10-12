@@ -7,12 +7,13 @@ import MyButton from '../components/UI/button/MyButton'
 import Loader from '../components/UI/loader/Loader'
 import MyModal from '../components/UI/modal/MyModal'
 import Pagination from '../components/UI/pagination/Pagination'
+import MySelect from '../components/UI/select/MySelect.jsx'
 import { useFetching } from '../hooks/useFetching'
 import { useObserver } from '../hooks/useObserver.js'
 import { usePosts } from '../hooks/usePosts'
 
 import '../styles/App.css'
-import { getPageCount, getPagesArray } from '../utils/pages'
+import { getPageCount } from '../utils/pages'
 const Posts = () => {
   //!--- hooks состояний
   const [posts, setPosts] = useState([])
@@ -42,7 +43,7 @@ const Posts = () => {
   //!--- массив зависимостей пустой - callback отработает один раз
   useEffect(() => {
     fetchPosts(limit, page)
-  }, [page])
+  }, [page, limit])
 
   //!--- создание
   const createPost = (newPosts) => {
@@ -69,6 +70,21 @@ const Posts = () => {
       <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
       {postError && <h1>Произошла ошибка ${postError}</h1>}
+
+      <MySelect
+        value={limit}
+        onChange={(value) => setLimit(value)}
+        defaultValue="Кол-во эл-ов на странице"
+        options={[
+          { value: 5, name: '5' },
+          { value: 10, name: '10' },
+          { value: 15, name: '15' },
+          { value: 20, name: '20' },
+          { value: 25, name: '25' },
+          { value: -1, name: 'Показать все' },
+        ]}
+      />
+
       <PostList
         remove={removePost}
         posts={sortedAndSearchedPosts}
