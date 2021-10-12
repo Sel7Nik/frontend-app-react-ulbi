@@ -8,6 +8,7 @@ import Loader from '../components/UI/loader/Loader'
 import MyModal from '../components/UI/modal/MyModal'
 import Pagination from '../components/UI/pagination/Pagination'
 import { useFetching } from '../hooks/useFetching'
+import { useObserver } from '../hooks/useObserver.js'
 import { usePosts } from '../hooks/usePosts'
 
 import '../styles/App.css'
@@ -22,7 +23,6 @@ const Posts = () => {
   const [page, setPage] = useState(1)
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
   const lastElement = useRef()
-  const observer = useRef()
   //!---
 
   const [fetchPosts, isPostLoading, postError] = useFetching(
@@ -33,18 +33,10 @@ const Posts = () => {
       setTotalPages(getPageCount(totalCount, limit))
     }
   )
-  useEffect(() => {
-    if (isPostLoading) return
-    if (observer.current) observer.current.disconnect()
-    const callback = (entries, observer) => {
-      if (entries[0].isIntersecting && page < totalPages) {
-        console.log(page)
-        setPage(page + 1)
-      }
-    }
-    observer.current = new IntersectionObserver(callback)
-    observer.current.observe(lastElement.current)
-  }, [isPostLoading])
+  //!---
+  useObserver(lastElement, page < totalPages, isPostLoading, () => {
+    setPage(page + 1)
+  })
 
   //!--- hook состояние mount
   //!--- массив зависимостей пустой - callback отработает один раз
